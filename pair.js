@@ -4,11 +4,13 @@ const {
   makeWASocket,
   useMultiFileAuthState,
   fetchLatestBaileysVersion,
+  makeCacheableSignalKeyStore,
   DisconnectReason
 } = require('@whiskeysockets/baileys');
 const pino = require('pino');
 const fs = require('fs');
 const zlib = require('zlib');
+const path = require('path');
 
 router.get('/', async (req, res) => {
   const number = req.query.number;
@@ -17,44 +19,82 @@ router.get('/', async (req, res) => {
   const clean = number.replace(/[^0-9]/g, '');
   if (clean.length < 10) return res.json({ error: 'Invalid number' });
 
-  const sessionDir = `./sessions/${clean}`;
+  const sessionDir = path.join('/tmp', `session_${clean}`);
   if (!fs.existsSync(sessionDir)) fs.mkdirSync(sessionDir, { recursive: true });
+
+  let sock;
+  let responded = false;
+
+  const respond = (data) => {
+    if (!responded) {
+      responded = true;
+      try { sock?.end(); } catch(e) {}
+      res.json(data);
+    }
+  };
 
   try {
     const { state, saveCreds } = await useMultiFileAuthState(sessionDir);
     const { version } = await fetchLatestBaileysVersion();
 
-    const sock = makeWASocket({
+    sock = makeWASocket({
       version,
       logger: pino({ level: 'silent' }),
       printQRInTerminal: false,
-      auth: state,
-      browser: ['Chrome', 'Windows', '10.0'],
+      auth: {
+        creds: state.creds,
+        keys: makeCacheableSignalKeyStore(state.keys, pino({ level: 'silent' }))
+      },
+      browser: ['Ubuntu', 'Chrome', '20.0.04'],
+      markOnlineOnConnect: false,
     });
 
     sock.ev.on('creds.update', saveCreds);
 
-    if (!sock.authState.creds.registered) {
-      const code = await sock.requestPairingCode(clean);
-      const formattedCode = code.match(/.{1,4}/g).join('-');
+    sock.ev.on('connection.update', async (update) => {
+      const { connection, lastDisconnect } = update;
 
-      // Wait for session
-      await new Promise(resolve => setTimeout(resolve, 5000));
-
-      let sessionStr = '';
-      const credsPath = `${sessionDir}/creds.json`;
-      if (fs.existsSync(credsPath)) {
-        const creds = fs.readFileSync(credsPath);
-        const compressed = zlib.gzipSync(creds);
-        sessionStr = 'UZAIR-MD~' + compressed.toString('base64');
+      if (connection === 'open') {
+        // Connected — get session
+        await new Promise(r => setTimeout(r, 2000));
+        const credsPath = path.join(sessionDir, 'creds.json');
+        let sessionStr = '';
+        if (fs.existsSync(credsPath)) {
+          const creds = fs.readFileSync(credsPath);
+          const compressed = zlib.gzipSync(creds);
+          sessionStr = 'UZAIR-MD~' + compressed.toString('base64');
+        }
+        respond({ session: sessionStr, message: 'Connected!' });
       }
 
-      return res.json({ code: formattedCode, session: sessionStr });
+      if (connection === 'close') {
+        const shouldReconnect = lastDisconnect?.error?.output?.statusCode !== DisconnectReason.loggedOut;
+        if (!shouldReconnect && !responded) {
+          respond({ error: 'Connection closed — retry karo' });
+        }
+      }
+    });
+
+    // Request pair code
+    if (!sock.authState.creds.registered) {
+      await new Promise(r => setTimeout(r, 2000));
+      try {
+        const code = await sock.requestPairingCode(clean);
+        const formattedCode = code?.match(/.{1,4}/g)?.join('-') || code;
+        res.json({ code: formattedCode });
+        responded = true;
+      } catch(err) {
+        respond({ error: err.message });
+      }
     }
 
-    res.json({ error: 'Already registered' });
+    // Timeout 60s
+    setTimeout(() => {
+      respond({ error: 'Timeout — dobara try karo' });
+    }, 60000);
+
   } catch (err) {
-    res.json({ error: err.message });
+    respond({ error: err.message });
   }
 });
 
