@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>UZAIR MD BOT — Pair Code</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Rajdhani',sans-serif;background:#0a0a0a;color:#fff;min-height:100vh;display:flex;flex-direction:column;align-items:center}
+  .navbar{width:100%;background:#111;border-bottom:2px solid #00e676;padding:12px 24px;display:flex;align-items:center;justify-content:space-between}
+  .nav-logo{font-size:20px;font-weight:700;letter-spacing:2px;color:#fff}
+  .nav-logo span{color:#00e676}
+  .nav-status{display:flex;align-items:center;gap:6px;font-size:12px;color:#00e676;font-weight:600}
+  .nav-dot{width:8px;height:8px;border-radius:50%;background:#00e676;animation:blink 1.5s infinite}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+  .page{width:100%;max-width:420px;padding:40px 20px;display:flex;flex-direction:column;align-items:center}
+  .bot-logo{width:90px;height:90px;border-radius:50%;border:3px solid #00e676;box-shadow:0 0 30px rgba(0,230,118,.4);display:flex;align-items:center;justify-content:center;font-size:40px;margin-bottom:16px;animation:glow 3s ease-in-out infinite alternate;background:radial-gradient(circle,#111 60%,#0d2b1a)}
+  @keyframes glow{from{box-shadow:0 0 20px rgba(0,230,118,.3)}to{box-shadow:0 0 50px rgba(0,230,118,.7)}}
+  .bot-name{font-size:28px;font-weight:700;color:#00e676;letter-spacing:3px;text-transform:uppercase;text-shadow:0 0 20px rgba(0,230,118,.5);margin-bottom:6px}
+  .bot-sub{font-size:12px;letter-spacing:4px;color:#888;text-transform:uppercase;margin-bottom:32px}
+  .card{width:100%;background:#111;border:1px solid #1e3a2a;border-radius:16px;padding:24px;position:relative;overflow:hidden;margin-bottom:16px}
+  .card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#00e676,transparent)}
+  .field-label{font-size:11px;letter-spacing:2px;color:#00e676;text-transform:uppercase;margin-bottom:8px;font-weight:600}
+  input[type=tel]{width:100%;background:#0d0d0d;border:1px solid #1e3a2a;border-radius:10px;padding:14px 16px;color:#fff;font-family:'Share Tech Mono',monospace;font-size:16px;outline:none;transition:border-color .2s;margin-bottom:16px;letter-spacing:1px}
+  input[type=tel]:focus{border-color:#00e676;box-shadow:0 0 0 3px rgba(0,230,118,.1)}
+  input[type=tel]::placeholder{color:#333}
+  .checkbox-wrap{display:flex;align-items:center;gap:10px;margin-bottom:20px;cursor:pointer}
+  .checkbox-wrap input[type=checkbox]{display:none}
+  .custom-check{width:18px;height:18px;border:1.5px solid #333;border-radius:4px;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;background:#0d0d0d}
+  .checkbox-wrap input:checked+.custom-check{background:#00e676;border-color:#00e676}
+  .checkbox-wrap input:checked+.custom-check::after{content:'✓';font-size:12px;color:#000;font-weight:700}
+  .check-label{font-size:13px;color:#666}
+  .check-label a{color:#00e676;text-decoration:none}
+  .btn-generate{width:100%;padding:15px;background:linear-gradient(135deg,#00e676,#00c853);border:none;border-radius:10px;color:#000;font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:14px;box-shadow:0 4px 20px rgba(0,230,118,.2)}
+  .btn-generate:disabled{opacity:.4;cursor:not-allowed}
+  .code-box{width:100%;background:#0d0d0d;border:1px solid #1e3a2a;border-radius:10px;padding:16px;text-align:center;font-family:'Share Tech Mono',monospace;font-size:13px;color:#333;letter-spacing:1px;min-height:52px;display:flex;align-items:center;justify-content:center;transition:all .3s;cursor:pointer}
+  .code-box.has-code{color:#00e676;border-color:#00e676;font-size:28px;letter-spacing:8px;box-shadow:0 0 20px rgba(0,230,118,.1)}
+  .session-box{width:100%;background:#0d0d0d;border:1px solid #00e676;border-radius:10px;padding:12px;font-family:'Share Tech Mono',monospace;font-size:10px;color:#00e676;word-break:break-all;display:none;margin-top:12px;cursor:pointer;text-align:center}
+  .status-msg{margin-top:14px;padding:10px 14px;border-radius:8px;font-size:13px;display:none;font-family:'Share Tech Mono',monospace}
+  .status-msg.error{background:rgba(255,82,82,.1);border:1px solid rgba(255,82,82,.2);color:#ff5252;display:block}
+  .status-msg.success{background:rgba(0,230,118,.1);border:1px solid rgba(0,230,118,.2);color:#00e676;display:block}
+  .status-msg.info{background:rgba(0,136,204,.1);border:1px solid rgba(0,136,204,.2);color:#0088cc;display:block}
+  .steps{width:100%;background:#111;border:1px solid #1e3a2a;border-radius:16px;padding:20px 24px;margin-top:4px}
+  .steps-title{font-size:11px;letter-spacing:3px;color:#00e676;text-transform:uppercase;margin-bottom:16px;font-weight:600}
+  .step{display:flex;gap:14px;margin-bottom:14px;align-items:flex-start}
+  .step:last-child{margin-bottom:0}
+  .step-n{width:24px;height:24px;min-width:24px;border:1px solid #00e676;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#00e676;font-family:'Share Tech Mono',monospace}
+  .step-t{font-size:13px;color:#888;line-height:1.6;padding-top:2px}
+  .step-t strong{color:#ccc}
+  .footer{margin-top:24px;font-size:12px;color:#333;letter-spacing:1px;text-align:center;padding-bottom:20px}
+  .footer span{color:#00e676}
+  .toast{display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#00e676;color:#000;font-weight:700;font-size:13px;padding:10px 24px;border-radius:50px;z-index:999;white-space:nowrap}
+</style>
+</head>
+<body>
+<div class="navbar">
+  <div class="nav-logo">UZAIR <span>MD</span></div>
+  <div class="nav-status"><div class="nav-dot"></div>ONLINE</div>
+</div>
+<div class="page">
+  <div class="bot-logo">🤖</div>
+  <div class="bot-name">UZAIR MD BOT</div>
+  <div class="bot-sub">Connect 100% Free</div>
+  <div class="card">
+    <div class="field-label">Enter WhatsApp Number</div>
+    <input type="tel" id="numberInput" placeholder="923001234567" maxlength="15" inputmode="numeric"/>
+    <label class="checkbox-wrap">
+      <input type="checkbox" id="agreeCheck"/>
+      <div class="custom-check"></div>
+      <span class="check-label">I agree to the <a href="#">Terms & Policy</a></span>
+    </label>
+    <button class="btn-generate" id="genBtn" onclick="generateCode()">⚡ GENERATE PAIR CODE</button>
+    <div class="code-box" id="codeBox" onclick="copyCode()">YOUR CODE WILL APPEAR HERE</div>
+    <div class="session-box" id="sessionBox" onclick="copySession()">SESSION STRING WILL APPEAR HERE — TAP TO COPY</div>
+    <div class="status-msg" id="statusMsg"></div>
+  </div>
+  <div class="steps">
+    <div class="steps-title">// HOW TO PAIR</div>
+    <div class="step"><div class="step-n">1</div><div class="step-t">Apna <strong>WhatsApp number</strong> daalo (country code ke saath)</div></div>
+    <div class="step"><div class="step-n">2</div><div class="step-t"><strong>Generate</strong> dabao — pair code milega</div></div>
+    <div class="step"><div class="step-n">3</div><div class="step-t">WhatsApp → <strong>Settings → Linked Devices → Link with phone number</strong></div></div>
+    <div class="step"><div class="step-n">4</div><div class="step-t">Code enter karo — <strong>Session String</strong> copy karo</div></div>
+    <div class="step"><div class="step-n">5</div><div class="step-t">Session String <strong>config.js</strong> mein paste karo ✅</div></div>
+  </div>
+  <div class="footer">Made with ❤️ by <span>UZAIR</span> &nbsp;·&nbsp; v1.0.0</div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+  let currentCode = '';
+  let currentSession = '';
+
+  async function generateCode() {
+    const number = document.getElementById('numberInput').value.replace(/[^0-9]/g,'');
+    const agreed = document.getElementById('agreeCheck').checked;
+    const box = document.getElementById('codeBox');
+    const btn = document.getElementById('genBtn');
+    const sessionBox = document.getElementById('sessionBox');
+
+    if (!number || number.length < 10) { showStatus('❌ Valid number daalo!','error'); return; }
+    if (!agreed) { showStatus('❌ Terms agree karo!','error'); return; }
+
+    btn.disabled = true;
+    btn.textContent = '⏳ GENERATING...';
+    box.className = 'code-box';
+    box.textContent = 'CODE GENERATE HO RAHA HAI...';
+    sessionBox.style.display = 'none';
+
+    try {
+      showStatus('⏳ WhatsApp se connect ho raha hai...','info');
+      const res = await fetch(`/pair?number=${number}`);
+      const data = await res.json();
+
+      if (data.error) throw new Error(data.error);
+
+      currentCode = data.code;
+      box.className = 'code-box has-code';
+      box.textContent = data.code;
+
+      if (data.session) {
+        currentSession = data.session;
+        sessionBox.textContent = data.session;
+        sessionBox.style.display = 'block';
+        showStatus('🎉 Code aur Session String ready! Tap karke copy karo!','success');
+      } else {
+        showStatus('✅ Code mil gaya! WhatsApp mein enter karo 👆','success');
+      }
+
+    } catch(err) {
+      showStatus('❌ ' + err.message,'error');
+      box.textContent = 'RETRY KARO →';
+    }
+
+    btn.disabled = false;
+    btn.textContent = '⚡ GENERATE PAIR CODE';
+  }
+
+  function copyCode() {
+    if (!currentCode) return;
+    navigator.clipboard.writeText(currentCode).then(() => showToast('✓ Code Copied!'));
+  }
+  function copySession() {
+    if (!currentSession) return;
+    navigator.clipboard.writeText(currentSession).then(() => showToast('✓ Session Copied!'));
+  }
+  function showStatus(msg, type) {
+    const el = document.getElementById('statusMsg');
+    el.textContent = msg; el.className = 'status-msg ' + type;
+  }
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.style.display = 'block';
+    setTimeout(() => t.style.display = 'none', 2000);
+  }
+  document.getElementById('numberInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') generateCode();
+  });
+</script>
+</body>
+</html>
