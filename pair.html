@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>UZAIR X ALONE MD</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Rajdhani',sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0a0a2e 0%,#1a0a3e 50%,#0a0a2e 100%);overflow-x:hidden}
+.bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.circle{position:absolute;border-radius:50%;filter:blur(80px);opacity:.15}
+.c1{width:400px;height:400px;background:#6c63ff;top:-100px;left:-100px;animation:move1 8s ease-in-out infinite alternate}
+.c2{width:300px;height:300px;background:#a855f7;bottom:-50px;right:-50px;animation:move2 6s ease-in-out infinite alternate}
+.c3{width:200px;height:200px;background:#3b82f6;top:50%;left:50%;animation:move3 10s ease-in-out infinite alternate}
+@keyframes move1{from{transform:translate(0,0)}to{transform:translate(50px,50px)}}
+@keyframes move2{from{transform:translate(0,0)}to{transform:translate(-30px,-30px)}}
+@keyframes move3{from{transform:translate(-50%,-50%) scale(1)}to{transform:translate(-50%,-50%) scale(1.5)}}
+
+.star{position:absolute;border-radius:50%;background:#fff;animation:twinkle linear infinite}
+@keyframes twinkle{0%,100%{opacity:0}50%{opacity:.8}}
+
+.container{position:relative;z-index:1;width:100%;max-width:390px;padding:16px}
+
+.card{width:100%;background:linear-gradient(145deg,rgba(15,5,50,.85),rgba(25,10,70,.9));border:1px solid rgba(108,99,255,.25);border-radius:28px;padding:28px 22px;backdrop-filter:blur(30px);box-shadow:0 25px 80px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.05) inset}
+
+.bot-icon-wrap{width:90px;height:90px;border-radius:22px;background:linear-gradient(135deg,#4f46e5,#7c3aed,#a855f7);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:45px;box-shadow:0 8px 32px rgba(124,58,237,.5),0 0 0 1px rgba(255,255,255,.1) inset;animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-8px) rotate(2deg)}}
+
+.bot-name{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;text-align:center;background:linear-gradient(90deg,#818cf8,#c084fc,#f472b6,#c084fc,#818cf8);background-size:300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shimmer 4s linear infinite;margin-bottom:4px;letter-spacing:2px}
+@keyframes shimmer{0%{background-position:0%}100%{background-position:300%}}
+
+.bot-sub{text-align:center;color:rgba(255,255,255,.45);font-size:12px;letter-spacing:3px;text-transform:uppercase;margin-bottom:20px}
+
+.social-row{display:flex;gap:10px;justify-content:center;margin-bottom:20px}
+.s-btn{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;border:1px solid rgba(255,255,255,.08);font-size:18px;text-decoration:none}
+.s-btn:hover{transform:translateY(-3px) scale(1.05);box-shadow:0 8px 20px rgba(0,0,0,.3)}
+.s-yt{background:linear-gradient(135deg,#ff416c,#ff4b2b)}
+.s-fb{background:linear-gradient(135deg,#2196f3,#0d47a1)}
+.s-wa{background:linear-gradient(135deg,#25d366,#075e54)}
+.s-gh{background:linear-gradient(135deg,#24292e,#586069)}
+
+.tabs{display:flex;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:3px;margin-bottom:18px;gap:3px}
+.tab{flex:1;padding:11px 8px;text-align:center;border-radius:12px;cursor:pointer;font-size:13px;font-weight:700;letter-spacing:.5px;transition:all .25s;color:rgba(255,255,255,.4);border:none;background:transparent;font-family:'Rajdhani',sans-serif;display:flex;align-items:center;justify-content:center;gap:6px}
+.tab.active{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;box-shadow:0 4px 15px rgba(79,70,229,.4)}
+
+.field-label{font-size:11px;letter-spacing:2px;color:rgba(255,255,255,.4);text-transform:uppercase;margin-bottom:8px;font-weight:600}
+
+.input-wrap{position:relative;margin-bottom:14px}
+.prefix{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.35);font-family:'Share Tech Mono',monospace;font-size:15px;pointer-events:none}
+input[type=tel]{width:100%;background:rgba(255,255,255,.04);border:1.5px solid rgba(108,99,255,.25);border-radius:13px;padding:14px 14px 14px 32px;color:#fff;font-family:'Share Tech Mono',monospace;font-size:15px;outline:none;transition:all .2s;letter-spacing:1px}
+input[type=tel]:focus{border-color:#7c3aed;box-shadow:0 0 0 3px rgba(124,58,237,.15),0 0 20px rgba(124,58,237,.1)}
+input[type=tel]::placeholder{color:rgba(255,255,255,.18)}
+
+.btn-gen{width:100%;padding:15px;background:linear-gradient(135deg,#4f46e5,#7c3aed,#a855f7);border:none;border-radius:13px;color:#fff;font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;cursor:pointer;transition:all .25s;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:12px;box-shadow:0 4px 20px rgba(79,70,229,.4),0 0 0 1px rgba(255,255,255,.08) inset}
+.btn-gen:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(79,70,229,.6)}
+.btn-gen:active{transform:translateY(0)}
+.btn-gen:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+.code-display{width:100%;background:rgba(0,0,0,.25);border:1.5px solid rgba(108,99,255,.15);border-radius:13px;padding:18px;text-align:center;font-family:'Share Tech Mono',monospace;color:rgba(255,255,255,.2);font-size:12px;letter-spacing:2px;min-height:58px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;transition:all .3s;cursor:pointer}
+.code-display.has-code{color:#a78bfa;border-color:#7c3aed;font-size:24px;letter-spacing:8px;font-weight:700;box-shadow:0 0 30px rgba(167,139,250,.15),0 0 0 1px rgba(167,139,250,.1) inset;text-shadow:0 0 20px rgba(167,139,250,.5)}
+
+.btn-copy{width:100%;padding:13px;background:rgba(255,255,255,.04);border:1.5px solid rgba(108,99,255,.2);border-radius:13px;color:rgba(255,255,255,.6);font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-copy:hover{background:rgba(124,58,237,.1);border-color:#7c3aed;color:#fff;transform:translateY(-1px)}
+
+.session-box{width:100%;background:rgba(0,180,100,.05);border:1px solid rgba(0,230,118,.2);border-radius:12px;padding:10px;font-family:'Share Tech Mono',monospace;font-size:9px;color:#4ade80;word-break:break-all;display:none;margin-top:10px;cursor:pointer;text-align:center;line-height:1.5}
+
+.status-msg{margin-top:10px;padding:10px 14px;border-radius:11px;font-size:12px;display:none;text-align:center;font-family:'Share Tech Mono',monospace}
+.status-msg.error{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:#f87171;display:block}
+.status-msg.success{background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.2);color:#4ade80;display:block}
+.status-msg.info{background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.2);color:#a78bfa;display:block}
+
+.footer{margin-top:18px;text-align:center;color:rgba(255,255,255,.18);font-size:11px;letter-spacing:1px}
+.footer span{color:#a78bfa}
+
+.toast{display:none;position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;font-weight:700;font-size:13px;padding:12px 28px;border-radius:50px;z-index:999;white-space:nowrap;box-shadow:0 8px 25px rgba(79,70,229,.5)}
+</style>
+</head>
+<body>
+
+<div class="bg" id="bg">
+  <div class="circle c1"></div>
+  <div class="circle c2"></div>
+  <div class="circle c3"></div>
+</div>
+
+<div class="container">
+  <div class="card">
+
+    <div class="bot-icon-wrap">🤖</div>
+    <div class="bot-name">UZAIR X ALONE MD</div>
+    <div class="bot-sub">Link your WhatsApp device</div>
+
+    <div class="social-row">
+      <a class="s-btn s-yt" href="https://youtube.com" target="_blank">▶</a>
+      <a class="s-btn s-fb" href="https://facebook.com" target="_blank">f</a>
+      <a class="s-btn s-wa" href="https://whatsapp.com" target="_blank">💬</a>
+      <a class="s-btn s-gh" href="https://github.com" target="_blank">⌥</a>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('pair')">🔑 Pair Code</button>
+      <button class="tab" onclick="switchTab('qr')">⊞ QR Code</button>
+    </div>
+
+    <div id="pairSection">
+      <div class="field-label">Enter your WhatsApp number with country code</div>
+      <div class="input-wrap">
+        <span class="prefix">+</span>
+        <input type="tel" id="numberInput" placeholder="923001234567" maxlength="15" inputmode="numeric"/>
+      </div>
+      <button class="btn-gen" id="genBtn" onclick="generateCode()">🔑 Generate Pair Code</button>
+      <div class="code-display" id="codeBox">Your pair code will appear here</div>
+      <button class="btn-copy" onclick="copyCode()">📋 Copy Code</button>
+      <div class="session-box" id="sessionBox" onclick="copySession()">SESSION STRING — TAP TO COPY</div>
+      <div class="status-msg" id="statusMsg"></div>
+    </div>
+
+    <div id="qrSection" style="display:none">
+      <div style="text-align:center;padding:30px 0;color:rgba(255,255,255,.3);font-size:13px;letter-spacing:1px">
+        🔄 QR Code coming soon!<br><br>Please use Pair Code.
+      </div>
+    </div>
+
+    <div class="footer">© 2026 <span>UZAIR X ALONE MD</span>. All rights reserved.</div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // Stars
+  const bg = document.getElementById('bg');
+  for(let i=0;i<60;i++){
+    const s=document.createElement('div');
+    s.className='star';
+    const sz=Math.random()*2+.5;
+    s.style.cssText=`width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;animation-duration:${Math.random()*4+2}s;animation-delay:${Math.random()*5}s`;
+    bg.appendChild(s);
+  }
+
+  let currentCode='', currentSession='';
+
+  function switchTab(tab){
+    document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',(i===0&&tab==='pair')||(i===1&&tab==='qr')));
+    document.getElementById('pairSection').style.display=tab==='pair'?'block':'none';
+    document.getElementById('qrSection').style.display=tab==='qr'?'block':'none';
+  }
+
+  async function generateCode(){
+    const number=document.getElementById('numberInput').value.replace(/[^0-9]/g,'');
+    const box=document.getElementById('codeBox');
+    const btn=document.getElementById('genBtn');
+    const sessionBox=document.getElementById('sessionBox');
+
+    if(!number||number.length<10){showStatus('❌ Valid number daalo!','error');return;}
+
+    btn.disabled=true;
+    btn.textContent='⏳ Generating...';
+    box.className='code-display';
+    box.textContent='Connecting to WhatsApp...';
+    sessionBox.style.display='none';
+    currentCode='';currentSession='';
+
+    try{
+      showStatus('⏳ WhatsApp se connect ho raha hai...','info');
+      const res=await fetch(`/pair?number=${number}`);
+      const data=await res.json();
+      if(data.error)throw new Error(data.error);
+      currentCode=data.code;
+      box.className='code-display has-code';
+      box.textContent=data.code;
+      if(data.session){
+        currentSession=data.session;
+        sessionBox.textContent=data.session;
+        sessionBox.style.display='block';
+        showStatus('🎉 Code aur Session ready!','success');
+      } else {
+        showStatus('✅ Code mil gaya! WhatsApp mein enter karo!','success');
+      }
+    }catch(err){
+      showStatus('❌ '+err.message,'error');
+      box.textContent='Your pair code will appear here';
+    }
+    btn.disabled=false;
+    btn.textContent='🔑 Generate Pair Code';
+  }
+
+  function copyCode(){
+    if(!currentCode){showStatus('❌ Pehle code generate karo!','error');return;}
+    navigator.clipboard.writeText(currentCode).then(()=>showToast('✓ Code Copied!'));
+  }
+  function copySession(){
+    if(!currentSession)return;
+    navigator.clipboard.writeText(currentSession).then(()=>showToast('✓ Session Copied!'));
+  }
+  function showStatus(msg,type){
+    const el=document.getElementById('statusMsg');
+    el.textContent=msg;el.className='status-msg '+type;
+  }
+  function showToast(msg){
+    const t=document.getElementById('toast');
+    t.textContent=msg;t.style.display='block';
+    setTimeout(()=>t.style.display='none',2000);
+  }
+  document.getElementById('numberInput').addEventListener('keydown',e=>{if(e.key==='Enter')generateCode();});
+</script>
+</body>
+</html>
+
